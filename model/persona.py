@@ -28,3 +28,10 @@ class Bibliotecario(Persona):
         if(self.nivel_acceso==1):
             return f"[BIBLIOTECARIO] {super().__str__()} | Nivel de acceso: {self.nivel_acceso}"
         return f"[ADMINISTRADOR] {super().__str__()} | Nivel de acceso: {self.nivel_acceso}"
+
+class Autor(Persona):
+    def __init__(self, nombre: str, codigo: str, email: str) -> None:
+        super().__init__(nombre, codigo.upper(), email)
+        
+    def __str__(self) -> str:
+        return f"[AUTOR] {super().__str__()}"
