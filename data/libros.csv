@@ -1,11 +1,11 @@
-ISBN,Titulo,Autor,Categoria,Stock,Cantidad prestamos
-ISBN-001,Cien años de soledad,Gabriel Garcia Marquez,Novela,9,0
-ISBN-002,Don Quijote de la Mancha,Miguel de Cervantes,Clasico,2,0
-ISBN-003,La ciudad y los perros,Mario Vargas Llosa,Novela,4,1
-ISBN-004,Tradiciones peruanas,Ricardo Palma,Literatura peruana,5,0
-ISBN-005,Los ríos profundos,Jose Maria Arguedas,Literatura peruana,4,0
-ISBN-006,1984,George Orwell,Distopía,2,0
-ISBN-007,El principito,Antoine de Saint-Exupéry,Infantil,5,0
-ISBN-008,Harry Potter y la piedra filosofal,J.K. Rowling,Fantasía,3,0
-ISBN-009,Crimen y castigo,Fiódor Dostoyevski,Novela,2,0
-ISBN-010,El hobbit,J.R.R. Tolkien,Fantasía,6,0
+ISBN,Titulo,Codigo de autor,Nombre de autor,Categoria,Stock,Cantidad prestamos
+ISBN-001,Cien años de soledad,A0001,Gabriel Garcia Marquez,Novela,9,0
+ISBN-002,Don Quijote de la Mancha,A0002,Miguel de Cervantes,Clasico,2,0
+ISBN-003,La ciudad y los perros,A0003,Mario Vargas Llosa,Novela,4,1
+ISBN-004,Tradiciones peruanas,A0004,Ricardo Palma,Literatura peruana,5,0
+ISBN-005,Los ríos profundos,A0005,Jose Maria Arguedas,Literatura peruana,4,0
+ISBN-006,1984,A0006,George Orwell,Distopía,2,0
+ISBN-007,El principito,A0007,Antoine de Saint-Exupéry,Infantil,5,0
+ISBN-008,Harry Potter y la piedra filosofal,A0008,J.K. Rowling,Fantasía,3,0
+ISBN-009,Crimen y castigo,A0009,Fiódor Dostoyevski,Novela,2,0
+ISBN-010,El hobbit,A0010,J.R.R. Tolkien,Fantasía,6,0

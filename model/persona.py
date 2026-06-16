@@ -5,7 +5,7 @@ class Persona:
         self.email = email
 
     def __str__(self) -> str:
-        return f"Nombre: {self.nombre}, Código: {self.codigo}, Email: {self.email}"
+        return f"{self.codigo} - {self.nombre}, {self.email}"
 
 class Estudiante(Persona):
     def __init__(self, nombre: str, codigo: str, email: str, carrera: str, cantidad_prestamos: int = 0) -> None:
@@ -28,3 +28,11 @@ class Bibliotecario(Persona):
         if(self.nivel_acceso==1):
             return f"[BIBLIOTECARIO] {super().__str__()} | Nivel de acceso: {self.nivel_acceso}"
         return f"[ADMINISTRADOR] {super().__str__()} | Nivel de acceso: {self.nivel_acceso}"
+    
+class Autor(Persona):
+    def __init__(self, nombre: str, codigo: str) -> None:
+        self.nombre = nombre
+        self.codigo = codigo
+    
+    def __str__(self) -> str:
+        return f"[AUTOR] {self.codigo} - {self.nombre}"

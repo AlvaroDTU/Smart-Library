@@ -1,13 +1,20 @@
 from model.libro import Libro
+from model.persona import Autor
+from repository.autor_repository import AutorRepository
 from repository.libro_repository import LibroRepository
 
 class LibroService:
-    def __init__(self, libro_repo : LibroRepository)->None:
+    def __init__(self, libro_repo : LibroRepository, autor_repo:AutorRepository)->None:
         self._repo: LibroRepository = libro_repo
+        self._autor_repo: AutorRepository = autor_repo
 
-    def registrar_libro(self, isbn : str,titulo : str, autor : str, categoria : str, stock : int)->Libro | None:
+    def registrar_libro(self, isbn : str,titulo : str, codigo_autor:str, categoria : str, stock : int)->Libro | None:
         if self._repo.buscar_por_isbn(isbn) is not None:
             print(f"Libro de isbn '{isbn}' ya registrado")
+            return
+        autor = self._autor_repo.buscar_por_codigo(codigo_autor)
+        if autor is None:
+            print(f"No se encontre al autor de codigo '{codigo_autor}', pruebe registrando a un nuevo autor")
             return
         libro = Libro(isbn,titulo,autor,categoria,stock)
         self._repo.agregar_libro(libro) 

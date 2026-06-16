@@ -1,18 +1,21 @@
 from model.libro import Libro
 from model.persona import Bibliotecario
 from model.persona import Estudiante
+from model.persona import Autor
 from model.prestamo import  Prestamo
 
 from repository.estudiante_repository import EstudianteRepository
 from repository.bibliotecario_repository import BibliotecarioRepository
 from repository.prestamo_repository import PrestamoRepository
 from repository.libro_repository import LibroRepository
+from repository.autor_repository import AutorRepository
 
 from service.bibliotecario_service import BibliotecarioService
 from service.estudiante_service import EstudianteService
 from service.prestamo_service import PrestamoService
 from service.libro_service import LibroService
 from service.reporte_service import ReporteService
+from service.autor_service import AutorService
 
 def cargar_datos_iniciales(estudiantes_service,bibliotecarios_service,libros_service):
     bibliotecarios_service.registrar_bibliotecario("Alvaro De Tomas","B20251N440","alvarosteven69@gmail.com",2)
@@ -78,13 +81,15 @@ def validar_codigo_estudiante():
 
 def main():
     estudiantes_repo = EstudianteRepository()
-    libros_repo = LibroRepository()
     bibliotecarios_repo = BibliotecarioRepository()
+    autores_repo = AutorRepository()
+    libros_repo = LibroRepository(autores_repo)
     prestamos_repo = PrestamoRepository(estudiantes_repo,libros_repo)
 
     estudiantes_service = EstudianteService(estudiantes_repo)
-    libros_service = LibroService(libros_repo)
     bibliotecarios_service = BibliotecarioService(bibliotecarios_repo)
+    autores_service = AutorService(autores_repo)
+    libros_service = LibroService(libros_repo, autores_repo)
     prestamos_service = PrestamoService(prestamos_repo, libros_repo, estudiantes_repo)
 
     reporte_service = ReporteService(estudiantes_repo,bibliotecarios_repo,libros_repo,prestamos_repo) 
@@ -92,7 +97,7 @@ def main():
         cargar_datos_iniciales(estudiantes_service,bibliotecarios_service,libros_service)
         print("Datos iniciales cargados desde la funcion")
     else:
-        print(f"Datos cargados desde CSV: {len(estudiantes_repo.listar())} estudiantes, {len(libros_repo.listar())} libros y {len(bibliotecarios_repo.listar())} bibliotecarios")
+        print(f"Datos cargados desde CSV: {len(estudiantes_repo.listar())} estudiantes, {len(libros_repo.listar())} libros ,{len(bibliotecarios_repo.listar())} bibliotecarios y {len(autores_repo.listar())} autores")
 
     codigo_1 = "B20251N440"
     codigo_2 = "B20251J487"
@@ -325,20 +330,36 @@ def main():
                 
 
         elif (opcion == "14"):
+            salir = False
             op = int(input("Agregar(1) | Eliminar(2) : " ))
             if(op==1):
-                while (True):
-                    isbn = input("Escribe el isbn del libro: ").upper()
-                    if isbn[:5] != "ISBN-":
-                        print("Debes iniciar con 'ISBN-' ")
-                        continue
-                    break
-                titulo = input("Escribe el titulo del libro: ")
-                autor = input("Escribe el autor del libro: ")
-                stock = int(input("Escriba el stock: "))
-                categoria = input("Escribe la categoria: ")
-                cantidad_prestamos = 0
-                libro_nuevo = libros_service.registrar_libro(isbn,titulo,autor,categoria,stock)
+                while(True):
+                    while (True):
+                        isbn = input("Escribe el isbn del libro: ").upper()
+                        if isbn[:5] != "ISBN-":
+                            print("Debes iniciar con 'ISBN-' ")
+                            continue
+                        break
+                    titulo = input("Escribe el titulo del libro: ")
+                    codigo_autor = input("Escribe el codigo del autor del libro: ")
+                    autor = autores_service.buscar_por_codigo(codigo_autor)
+                    if autor is None:
+                        opp = input("¿Desea registrar un nuevo autor (1) o intentar de nuevo con uno ya registrado (2)?: ")
+                        if (opp == "1"):
+                            while(True):
+                                codigo_autor = input("Ingrese codigo del autor a registrar: ")
+                                nombre_autor = input("Ingrese nombre del autor a registrar: ")
+                                email_autor = input("Ingrese email del autor a registrar: ")
+                                autor = autores_service.registrar_autor(codigo_autor,nombre_autor,email_autor)
+                                if autor is None:
+                                    continue
+                        elif (opp == "2"):
+                            continue
+                    stock = int(input("Escriba el stock: "))
+                    categoria = input("Escribe la categoria: ")
+                    if(autor is not None):
+                        break
+                libro_nuevo = libros_service.registrar_libro(isbn,titulo,autor.codigo,categoria,stock)
                 
             elif (op == 2):
                 isbn = input("Ingrese el isbn del libro a eliminar: ").upper()
